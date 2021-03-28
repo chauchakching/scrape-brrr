@@ -12,7 +12,7 @@ let server: Server;
 
 beforeAll(async () => {
   server = await startTestServer();
-  await new Promise(resolve => setTimeout(resolve, 1000))
+  await new Promise((resolve) => setTimeout(resolve, 1000));
 });
 
 afterAll(() => {
@@ -20,6 +20,20 @@ afterAll(() => {
 });
 
 describe("scrape", () => {
+  it("dead simple usage", async () => {
+    await expect(scrape(indexUrl, "ol li")).resolves.toEqual([
+      "item 1",
+      "item 2",
+      "item 3",
+    ]);
+  });
+
+  it("handle some css selector", async () => {
+    await expect(
+      scrape(indexUrl, "ul li:not(:first-child) p")
+    ).resolves.toEqual(["mary"]);
+  });
+
   it("single item", async () => {
     await expect(
       scrape(indexUrl, [{ name: "title", selector: "h1" }])

@@ -13,6 +13,30 @@ yarn add scrape-brrr
 
 ## Examples
 
+### Dead-simple usage
+
+```ts
+/**
+ *  <body>
+ *    <div>
+ *      <span>
+ *        <p>sentence 1</p>
+ *        <p>sentence 2</p>
+ *        <p>sentence 3</p>
+ *      </span>
+ *    </div>
+ *    <p>footer</p>
+ *  </body> 
+ */
+
+import { scrape } from 'scrape-brrr'
+
+const data = await scrape('http://website.com', 'div p:not(:first-child)')
+// ["sentence 2", "sentence 3"]
+```
+
+
+
 ### Scrape single item
 
 ```ts

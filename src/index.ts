@@ -33,7 +33,7 @@ type ScrapStruct = {
   /**
    * Transform the extracted value
    */
-  transform?: ((x: any) => any);
+  transform?: (x: any) => any;
 };
 
 type Ele = Document | Element;
@@ -41,10 +41,10 @@ type Ele = Document | Element;
 /**
  * The scraping function
  * @param url target url
- * @param outs scraping config
+ * @param outs scraping config, or a CSS selector string
  * @returns scraping result object
  */
-export const scrape = async (url: string, outs: ScrapStruct[]) => {
+export const scrape = async (url: string, outs: ScrapStruct[] | string) => {
   const { data } = await axios.get(url, {
     /**
      * Output binary to let jsdom do encoding sniffing
@@ -55,6 +55,16 @@ export const scrape = async (url: string, outs: ScrapStruct[]) => {
     responseType: "arraybuffer",
   });
   const dom = new JSDOM(data);
+
+  /**
+   * handle dead simple usage
+   */
+  if (typeof outs === "string") {
+    const selector = outs;
+    // @ts-ignore
+    return scrapDocument(dom.window.document, { name: "tmp", selector, many: true }).tmp;
+  }
+
   return R.mergeAll(outs.map((out) => scrapDocument(dom.window.document, out)));
 };
 
@@ -82,8 +92,9 @@ const scrapDocument = (dom: Ele, out: ScrapStruct): Object => {
 const finalTransformations = (dom: Element, out: ScrapStruct) =>
   mayTransform(out.transform)(getTextOrAttr(dom, out.attr));
 
-// @ts-ignore
-const mayTransform = (f: Function): ((x: any) => any) => R.defaultTo(R.identity, f);
+const mayTransform = (f: Function): ((x: any) => any) =>
+  // @ts-ignore
+  R.defaultTo(R.identity, f);
 
 const getTextOrAttr = (dom: Element, attr?: string) =>
   attr ? dom.getAttribute(attr) : dom.textContent;
