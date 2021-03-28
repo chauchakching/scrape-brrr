@@ -3,17 +3,47 @@ import { JSDOM } from "jsdom";
 import R from "ramda";
 import iconv from "iconv-lite";
 
+/**
+ * Config of scraping instructions and result data structure
+ */
 type ScrapStruct = {
   name: string;
+
+  /**
+   * CSS selector
+   */
   selector: string;
+
+  /**
+   * HTML element attribute to extract from
+   */
   attr?: string;
+
+  /**
+   * If true, return a list of results
+   */
   many?: boolean;
+
+  /**
+   * Create a nested data object.
+   * Children selectors will be applied to parent dom but not the root dom.
+   */
   nested?: ScrapStruct[];
+
+  /**
+   * Transform the extracted value
+   */
   transform?: ((x: any) => any);
 };
 
 type Ele = Document | Element;
 
+/**
+ * The scraping function
+ * @param url target url
+ * @param outs scraping config
+ * @returns scraping result object
+ */
 export const scrape = async (url: string, outs: ScrapStruct[]) => {
   const { data } = await axios.get(url, {
     /**
