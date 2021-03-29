@@ -13,6 +13,12 @@ yarn add scrape-brrr
 
 ## Examples
 
+*The following examples use typescript style import. For plain nodejs, use
+
+```js
+const { scrape } = require('scrape-brrr')
+```
+
 ### Dead-simple usage
 
 ```ts
