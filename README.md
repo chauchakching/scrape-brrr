@@ -3,7 +3,7 @@
 [![Build](https://github.com/chauchakching/scrape-brrr/actions/workflows/build.yml/badge.svg)](https://github.com/chauchakching/scrape-brrr/actions/workflows/build.yml) [![Version](https://img.shields.io/npm/v/scrape-brrr.svg)](https://www.npmjs.com/package/scrape-brrr) 
 
 
-Simple web page scraping.
+Simple web page scraping go brrr.
 
 ## Install
 
