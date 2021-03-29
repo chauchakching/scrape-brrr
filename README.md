@@ -5,6 +5,8 @@
 
 Simple web page scraping.
 
+[Try it on runkit](https://runkit.com/chauchakching/6061f6ca8d18a00019936c4c)
+
 ## Install
 
 ```bash
