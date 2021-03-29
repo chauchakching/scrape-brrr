@@ -21,7 +21,7 @@ jobs:
         
     - run: yarn install
     - run: yarn test
-    - run: yarn build --declaration
+    - run: yarn build
 
     - run: yarn release-it --ci --no-npm.publish
     - run: npm publish

@@ -4,10 +4,14 @@
   "description": "Simple web page scraping",
   "author": "chauchakching",
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "files": ["lib"],
   "scripts": {
     "test": "jest",
-    "build": "tsc"
+    "build": "yarn build:esm --declaration && yarn build:cjs --declaration",
+    "build:esm": "tsc --module es2015 --target es5 --outDir lib/esm",
+    "build:cjs": "tsc --module commonjs --outDir lib/cjs"
   },
   "repository": "chauchakching/scrape-brrr",
   "homepage": "https://github.com/chauchakching/scrape-brrr",
