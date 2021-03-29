@@ -7,6 +7,7 @@
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
   "files": ["lib"],
+  "keywords": ["scraper", "parser", "crawl"],
   "scripts": {
     "test": "jest",
     "build": "yarn build:esm --declaration && yarn build:cjs --declaration",
