@@ -1,14 +1,20 @@
 {
   "name": "scrape-brrr",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Simple web page scraping",
   "author": "chauchakching",
   "license": "MIT",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
-  "files": ["lib"],
+  "files": [
+    "lib"
+  ],
   "types": "lib/esm/index.d.ts",
-  "keywords": ["scraper", "parser", "crawl"],
+  "keywords": [
+    "scraper",
+    "parser",
+    "crawl"
+  ],
   "scripts": {
     "test": "jest",
     "build": "yarn build:esm --declaration && yarn build:cjs --declaration",
