@@ -5,15 +5,18 @@
 
 Simple web page scraping.
 
-[Try it on runkit](https://runkit.com/chauchakching/6061f6ca8d18a00019936c4c)
-
 ## Install
 
 ```bash
 yarn add scrape-brrr
 ```
 
-## Examples
+## Try it online
+
+- [scrape motherfuckingwebsite.com](https://runkit.com/chauchakching/6061f6ca8d18a00019936c4c)
+- [scrape first page of old.reddit.com](https://runkit.com/chauchakching/606478019d8de1001a80b81d)
+
+## Usage examples
 
 *The following examples use typescript style import. For plain nodejs, use
 
