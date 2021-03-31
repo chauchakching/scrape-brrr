@@ -1,0 +1,28 @@
+name: publish dry run
+on: 
+  pull_request:
+    branches:
+      - master
+jobs:
+  publish:
+    name: Build and release to npm
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    # Setup .npmrc file to publish to npm
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '12.x'
+        registry-url: 'https://registry.npmjs.org'
+    - name: git config
+      run: |
+        git config user.name "${GITHUB_ACTOR}"
+        git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+        
+    - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+      env:
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+    - run: yarn release-it --ci --dry-run
+        
