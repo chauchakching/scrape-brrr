@@ -200,7 +200,27 @@ const data = await scrape('http://website.com', [{
 // }
 ```
 
+### Website with dynamic content by js
 
+Use puppeteer to load page with javascript to scrape dynamic content.
+
+```ts
+/**
+ *  <body>
+ *    <h1>
+ *      tick tok tick tok
+ *    </h1>
+ *    <script>
+ *      document.querySelector('h1').textContent = 'boom!'
+ *    </script>
+ *  </body>
+ */
+
+import { scrape } from 'scrape-brrr'
+
+const data = await scrape('http://website.com', 'h1', { dynamic: true })
+// ["boom!"]
+```
 
 ## Other features
 
