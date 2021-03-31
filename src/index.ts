@@ -1,7 +1,6 @@
 import axios from "axios";
 import { JSDOM } from "jsdom";
 import R from "ramda";
-import iconv from "iconv-lite";
 
 /**
  * Config of scraping instructions and result data structure
