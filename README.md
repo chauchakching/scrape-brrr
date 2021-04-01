@@ -222,6 +222,55 @@ const data = await scrape('http://website.com', 'h1', { dynamic: true })
 // ["boom!"]
 ```
 
+### Scrape new reddit website
+
+Might not get the data correctly due to change of html structure.
+
+```ts
+const { scrape } = require("scrape-brrr");
+const numeral = require('numeral')
+
+async function scrapeNewReddit() {
+  const url = "https://reddit.com/";
+  const data = await scrape(url, [
+    {
+      name: "posts",
+      selector: ".Post",
+      many: true,
+      nested: [
+        {
+          name: "title",
+          selector: "h3",
+        },
+        {
+          name: "votes",
+          selector: "div:first-child div div div",
+          transform: str => numeral(str).value(),
+        },
+        {
+          name: "link",
+          selector: "a[data-click-id=body]",
+          attr: "href",
+        },
+      ],
+    },
+  ], { dynamic: true });
+  console.log(data);
+}
+
+scrapeNewReddit();
+// { 
+//   posts: [
+//     {
+//       title: 'GME Megathread for April 01, 2021',
+//       votes: 11800,
+//       link: '/r/wallstreetbets/comments/mhu8tg/gme_megathread_for_april_01_2021/'
+//     },
+//     ...
+//   ]
+// }
+```
+
 ## Other features
 
 - Handle non-utf8 charset response from server (e.g. chinese encoding `big5`)
