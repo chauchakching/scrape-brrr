@@ -1,6 +1,6 @@
 # scrape-brrr
 
-[![build and release](https://github.com/chauchakching/scrape-brrr/actions/workflows/publish.yml/badge.svg)](https://github.com/chauchakching/scrape-brrr/actions/workflows/publish.yml) [![Version](https://img.shields.io/npm/v/scrape-brrr.svg)](https://www.npmjs.com/package/scrape-brrr) 
+[![Build](https://github.com/chauchakching/scrape-brrr/actions/workflows/build.yml/badge.svg)](https://github.com/chauchakching/scrape-brrr/actions/workflows/build.yml) [![Version](https://img.shields.io/npm/v/scrape-brrr.svg)](https://www.npmjs.com/package/scrape-brrr) 
 
 
 Simple web page scraping.
@@ -11,7 +11,18 @@ Simple web page scraping.
 yarn add scrape-brrr
 ```
 
-## Examples
+## Try it online
+
+- [scrape motherfuckingwebsite.com](https://runkit.com/chauchakching/6061f6ca8d18a00019936c4c)
+- [scrape first page of old.reddit.com](https://runkit.com/chauchakching/606478019d8de1001a80b81d)
+
+## Usage examples
+
+*The following examples use typescript style import. For plain nodejs, use
+
+```js
+const { scrape } = require('scrape-brrr')
+```
 
 ### Dead-simple usage
 
@@ -189,7 +200,27 @@ const data = await scrape('http://website.com', [{
 // }
 ```
 
+### Website with dynamic content by js
 
+Use puppeteer to load page with javascript to scrape dynamic content.
+
+```ts
+/**
+ *  <body>
+ *    <h1>
+ *      tick tok tick tok
+ *    </h1>
+ *    <script>
+ *      document.querySelector('h1').textContent = 'boom!'
+ *    </script>
+ *  </body>
+ */
+
+import { scrape } from 'scrape-brrr'
+
+const data = await scrape('http://website.com', 'h1', { dynamic: true })
+// ["boom!"]
+```
 
 ## Other features
 

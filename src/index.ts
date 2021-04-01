@@ -1,7 +1,7 @@
 import axios from "axios";
 import { JSDOM } from "jsdom";
 import R from "ramda";
-import iconv from "iconv-lite";
+import puppeteer from "puppeteer";
 
 /**
  * Config of scraping instructions and result data structure
@@ -36,6 +36,13 @@ type ScrapStruct = {
   transform?: (x: any) => any;
 };
 
+type Options = {
+  /**
+   * Handle dynamic content by using puppeteer to load the page
+   */
+  dynamic?: boolean;
+};
+
 type Ele = Document | Element;
 
 /**
@@ -44,7 +51,34 @@ type Ele = Document | Element;
  * @param outs scraping config, or a CSS selector string
  * @returns scraping result object
  */
-export const scrape = async (url: string, outs: ScrapStruct[] | string) => {
+export const scrape = async (
+  url: string,
+  outs: ScrapStruct[] | string,
+  options?: Options
+) => {
+  const data = options?.dynamic
+    ? await getResposneDataFromPuppeteer(url)
+    : await getResponseDataFromAxios(url);
+
+  const dom = new JSDOM(data);
+
+  /**
+   * handle dead simple usage
+   */
+  if (typeof outs === "string") {
+    const selector = outs;
+    return scrapDocument(dom.window.document, {
+      name: "tmp",
+      selector,
+      many: true,
+      // @ts-ignore
+    }).tmp;
+  }
+
+  return R.mergeAll(outs.map((out) => scrapDocument(dom.window.document, out)));
+};
+
+const getResponseDataFromAxios = async (url: string) => {
   const { data } = await axios.get(url, {
     /**
      * Output binary to let jsdom do encoding sniffing
@@ -54,18 +88,16 @@ export const scrape = async (url: string, outs: ScrapStruct[] | string) => {
      */
     responseType: "arraybuffer",
   });
-  const dom = new JSDOM(data);
+  return data;
+};
 
-  /**
-   * handle dead simple usage
-   */
-  if (typeof outs === "string") {
-    const selector = outs;
-    // @ts-ignore
-    return scrapDocument(dom.window.document, { name: "tmp", selector, many: true }).tmp;
-  }
-
-  return R.mergeAll(outs.map((out) => scrapDocument(dom.window.document, out)));
+const getResposneDataFromPuppeteer = async (url: string) => {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  await page.goto(url);
+  const html = await page.evaluate(() => document.documentElement.outerHTML);
+  await browser.close();
+  return html;
 };
 
 const scrapDocument = (dom: Ele, out: ScrapStruct): Object => {

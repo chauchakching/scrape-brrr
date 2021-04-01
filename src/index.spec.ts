@@ -6,7 +6,8 @@ import R from "ramda";
 
 const domain = "http://localhost";
 const port = "8081";
-const indexUrl = `${domain}:${port}/index.html`;
+const host = `${domain}:${port}`;
+const indexUrl = `${host}/index.html`;
 
 let server: Server;
 
@@ -149,5 +150,11 @@ describe("scrape", () => {
     await expect(
       scrape(`${domain}:${port}/big5`, [{ name: "word", selector: "#chinese" }])
     ).resolves.toEqual({ word: "中文字" });
+  });
+
+  it("handle dynamic website", async () => {
+    await expect(
+      scrape(`${host}/dynamic.html`, "h1", { dynamic: true })
+    ).resolves.toEqual(["dynamic header"]);
   });
 });

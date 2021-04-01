@@ -23,10 +23,11 @@ jobs:
     - run: yarn test
     - run: yarn build
 
-    - run: yarn release-it --ci --no-npm.publish
-    - run: npm publish
+    - name: Release
       env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      run: npx semantic-release
         
     - name: Merge back to master
       uses: devmasx/merge-branch@v1.3.1
