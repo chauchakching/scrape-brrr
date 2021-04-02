@@ -16,7 +16,7 @@ yarn add scrape-brrr
 - [scrape motherfuckingwebsite.com](https://runkit.com/chauchakching/6061f6ca8d18a00019936c4c)
 - [scrape first page of old.reddit.com](https://runkit.com/chauchakching/606478019d8de1001a80b81d)
 
-## Usage examples
+## Examples
 
 *The following examples use typescript style import. For plain nodejs, use
 
