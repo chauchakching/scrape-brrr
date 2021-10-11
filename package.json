@@ -23,7 +23,7 @@
   "homepage": "https://github.com/chauchakching/scrape-brrr",
   "dependencies": {
     "axios": "^0.21.1",
-    "jsdom": "^16.5.1",
+    "jsdom": "^18.0.0",
     "puppeteer": "^8.0.0",
     "ramda": "^0.27.1"
   },
